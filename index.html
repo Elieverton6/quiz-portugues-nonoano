@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz de Português 9º ano - Prof ª Wanessa Lima</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="stage">
+    <header>
+      <div class="brand-group">
+        <div class="title-wrap">
+          <h1 style="font-size:18px;">SAEPE 2025</h1>
+          <h1>Quiz de Português 9º ano</h1>
+          <p>Resolva as questões e teste seus conhecimentos!</p>
+        </div>
+      </div>
+    </header>
+
+    <div id="quiz-box" class="slide-card">
+      <div class="progress"><div class="bar" id="progress-bar"></div></div>
+
+      <div class="question-header">
+        <span class="subject">Português</span>
+        <p>|</p>
+        <h3 id="question-counter"></h3>
+      </div>
+
+      <p id="text"></p>
+      <h2 id="question">Carregando...</h2>
+      <ul id="options" class="bullets"></ul>
+      <button id="next-btn" class="btn">Próxima</button>
+    </div>
+
+    <div id="result-box" class="slide-card hidden">
+      <h2>🎉 Resultado</h2>
+      <p>Você acertou <span id="score"></span> de <span id="total"></span> questões.</p>
+      <button id="restart-btn" class="btn secondary">Jogar Novamente</button>
+    </div>
+
+    <footer>Prof ª Wanessa Lima — Material Didático</footer>
+  </div>
+
+  <script>
+    // ===== Textos dos blocos =====
+    const textos = {
+      bloco1: `Maria caminhava pela praça todos os dias no final da tarde. Gostava de observar o movimento das pessoas e ouvir o canto dos pássaros. Certo dia, percebeu que o banco onde sempre se sentava estava ocupado por um senhor idoso que parecia triste. Ela se aproximou, sentou-se ao lado dele e ficaram olhando o pôr do sol em silêncio, sem trocar uma palavra.`,
+      bloco2: `O professor pediu aos alunos que trouxessem um objeto que tivesse valor emocional. Ana levou uma pequena caixa de madeira. Dentro dela havia cartas antigas que sua avó lhe escrevera quando era criança. Ao mostrar para a turma, Ana se emocionou e explicou que a caixa representava lembranças importantes de sua família.`
+    };
+
+    // ===== Questões =====
+    const questions = [
+      {q:"Onde Maria costumava caminhar diariamente?",o:["Na praia","Na praça","No parque","Na rua de casa"],a:1},
+      {q:"Qual parte do dia Maria caminhava?",o:["Pela manhã","Ao meio-dia","No final da tarde","À noite"],a:2},
+      {q:"O que Maria percebeu certo dia?",o:["Que a praça estava vazia","Que o banco estava quebrado","Que havia um senhor idoso no banco onde ela sentava","Que a praça estava em reforma"],a:2},
+      {q:"Qual a inferência mais adequada sobre o comportamento de Maria?",o:["Ela não gosta de conversar com ninguém","Ela tem pressa ao caminhar","Ela é observadora e sensível","Ela não gosta da praça"],a:2},
+      {q:"A presença do idoso no banco sugere que ele:",o:["Estava feliz","Estava triste ou pensativo","Estava com raiva","Estava esperando alguém"],a:1},
+      {q:"O que o professor pediu aos alunos?",o:["Um objeto de valor financeiro","Um objeto de valor emocional","Um brinquedo novo","Um livro de história"],a:1},
+      {q:"O que Ana levou?",o:["Um diário","Uma caixa de brinquedos","Uma pequena caixa com cartas da avó","Uma fotografia"],a:2},
+      {q:"Por que Ana se emocionou?",o:["Porque não gostava da escola","Porque lembrou de sua avó","Porque perdeu a caixa","Porque os colegas riram dela"],a:1},
+      {q:"Podemos inferir que as cartas para Ana:",o:["Não tinham importância","Eram apenas decorativas","Trazem lembranças afetivas","Foram escritas recentemente"],a:2},
+      {q:"O texto sugere que a relação entre Ana e sua avó era:",o:["Distante","Conflituosa","Afetuosa","Desconhecida"],a:2},
+      {q:"O tema e a finalidade do texto sobre a dengue são, respectivamente:",o:["O mosquito – divertir o leitor","A dengue – informar e orientar sobre prevenção","A saúde – persuadir a comprar remédios","O verão – contar uma história"],a:1},
+      {q:"O principal objetivo de um texto de propaganda é:",o:["Informar sobre fatos históricos","Convencer o leitor a comprar ou acreditar em algo","Explicar fenômenos da natureza","Descrever acontecimentos passados"],a:1},
+      {q:"A finalidade do texto sobre a campanha é:",o:["Entreter o leitor","Convocar para uma ação solidária","Ensinar a montar uma cesta básica","Contar uma história"],a:1},
+      {q:"Um texto jornalístico que relata um fato recente tem como finalidade:",o:["Convencer o leitor","Informar sobre algo que aconteceu","Brincar com as palavras","Fazer rir"],a:1},
+      {q:"O tema e a finalidade do texto sobre frutas são:",o:["Alimentação saudável – informar sobre benefícios das frutas","Frutas tropicais – contar curiosidades","Saúde – persuadir o leitor a vender frutas","Alimentação infantil – entreter o leitor"],a:0},
+      {q:"Quando um texto busca convencer o leitor, sua finalidade é:",o:["Informar","Persuadir","Narrar","Descrever"],a:1},
+      {q:"O texto sobre o menino que sonhava em ser astronauta tem como tema e finalidade:",o:["Astronomia – informar","Sonhos – entreter","Ciência – explicar","Educação – persuadir"],a:1},
+      {q:"Qual é o objetivo do anúncio dos calçados UltraFit?",o:["Ensinar sobre esportes","Divulgar um produto e convencer o leitor a comprá-lo","Informar sobre saúde","Contar uma história"],a:1},
+      {q:"Um texto científico publicado em revista tem como finalidade:",o:["Apresentar resultados de pesquisas e informar com base em dados","Fazer o leitor rir","Contar uma lenda","Divulgar produtos comerciais"],a:0},
+      {q:"A finalidade do texto sobre lavar as mãos é:",o:["Entreter o leitor","Convencer o leitor a comprar sabonete","Orientar e informar sobre hábitos de higiene","Contar um fato histórico"],a:2},
+      {q:"A frase 'O Brasil é o maior país da América do Sul' expressa:",o:["Uma opinião","Um fato","Um desejo","Uma dúvida"],a:1},
+      {q:"A frase 'O chocolate é o melhor doce do mundo' apresenta:",o:["Um fato","Uma opinião","Uma informação científica","Uma previsão"],a:1},
+      {q:"Sobre as frases 'A Terra gira em torno do Sol' e 'O Sol é o astro mais bonito do céu':",o:["As duas são fatos","As duas são opiniões","A primeira é fato e a segunda é opinião","A primeira é opinião e a segunda é fato"],a:2},
+      {q:"A frase 'A cidade de Recife é a capital de Pernambuco' é:",o:["Um fato, porque pode ser comprovado","Uma opinião, porque depende de gosto","Uma hipótese","Uma propaganda"],a:0},
+      {q:"A frase 'Os livros ajudam as pessoas a aprender mais' é:",o:["Um fato comprovável","Uma opinião sobre os livros","Uma previsão","Uma ordem"],a:1},
+      {q:"A frase 'As praias do Nordeste são mais bonitas que as do Sul' é:",o:["Um fato","Uma opinião","Um dado científico","Um relato histórico"],a:1},
+      {q:"A frase 'O ar-condicionado ajuda a refrescar o ambiente' expressa:",o:["Um fato","Uma opinião","Uma metáfora","Um conselho"],a:0},
+      {q:"A frase 'Matemática é a matéria mais difícil da escola' expressa:",o:["Um fato","Uma opinião","Uma informação técnica","Uma regra"],a:1},
+      {q:"A frase 'A água ferve a 100°C ao nível do mar' é:",o:["Uma opinião","Um fato científico","Um palpite","Uma hipótese"],a:1},
+      {q:"Sobre as frases 'O futebol é o esporte mais popular do Brasil' e 'O futebol é o esporte mais emocionante que existe':",o:["I é opinião e II é fato","I é fato e II é opinião","Ambas são opiniões","Ambas são fatos"],a:1}
+    ];
+
+    // ===== Variáveis =====
+    const textBox = document.getElementById("text");
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+    const progressBar = document.getElementById("progress-bar");
+    const quizBox = document.getElementById("quiz-box");
+    const resultBox = document.getElementById("result-box");
+    const scoreEl = document.getElementById("score");
+    const totalEl = document.getElementById("total");
+    const restartBtn = document.getElementById("restart-btn");
+    const questionCounter = document.getElementById("question-counter");
+
+    let current = 0;
+    let score = 0;
+    totalEl.textContent = questions.length;
+
+    function loadQuestion() {
+      const q = questions[current];
+      questionEl.textContent = q.q;
+      optionsEl.innerHTML = "";
+
+      // Textos dos blocos
+      if (current >= 0 && current <= 4) {
+        textBox.textContent = textos.bloco1;
+        textBox.style.display = "block";
+      } else if (current >= 5 && current <= 9) {
+        textBox.textContent = textos.bloco2;
+        textBox.style.display = "block";
+      } else {
+        textBox.style.display = "none";
+      }
+
+      q.o.forEach((opt, i) => {
+        const li = document.createElement("li");
+        li.textContent = opt;
+        li.addEventListener("click", () => selectOption(i));
+        optionsEl.appendChild(li);
+      });
+
+      questionCounter.textContent = `Questão ${current + 1} de ${questions.length}`;
+      progressBar.style.width = (current / questions.length) * 100 + "%";
+      nextBtn.style.display = "none";
+    }
+
+    function selectOption(i) {
+      const q = questions[current];
+      const opts = optionsEl.querySelectorAll("li");
+      opts.forEach((li, idx) => {
+        if (idx === q.a) li.classList.add("correct");
+        if (idx === i && i !== q.a) li.classList.add("wrong");
+        li.style.pointerEvents = "none";
+      });
+      if (i === q.a) score++;
+      nextBtn.style.display = "block";
+    }
+
+    nextBtn.onclick = () => {
+      current++;
+      if (current < questions.length) loadQuestion();
+      else showResult();
+    };
+
+    function showResult() {
+      quizBox.classList.add("hidden");
+      resultBox.classList.remove("hidden");
+      scoreEl.textContent = score;
+      progressBar.style.width = "100%";
+    }
+
+    restartBtn.onclick = () => {
+      score = 0;
+      current = 0;
+      resultBox.classList.add("hidden");
+      quizBox.classList.remove("hidden");
+      loadQuestion();
+    };
+
+    loadQuestion();
+  </script>
+</body>
+</html>
