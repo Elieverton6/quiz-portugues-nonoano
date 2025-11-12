@@ -10,7 +10,11 @@
   --radius: 18px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   font-family: 'Poppins', sans-serif;
@@ -24,11 +28,27 @@ body {
   line-height: 1.6;
 }
 
-.stage { width: 100%; max-width: 800px; }
+.stage {
+  width: 100%;
+  max-width: 800px;
+}
 
-header { text-align: center; margin-bottom: 28px; }
-.title-wrap h1 { margin: 0; color: var(--primary-dark); font-weight: 800; font-size: 28px; }
-.title-wrap p { color: var(--accent); font-weight: 600; margin-top: 4px; font-size: 15px; }
+header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.title-wrap h1 {
+  margin: 0;
+  color: var(--primary-dark);
+  font-weight: 800;
+  font-size: 28px;
+}
+.title-wrap p {
+  color: var(--accent);
+  font-weight: 600;
+  margin-top: 4px;
+  font-size: 15px;
+}
 
 .slide-card {
   background: #fff;
@@ -38,16 +58,20 @@ header { text-align: center; margin-bottom: 28px; }
   margin-bottom: 24px;
   border: 1px solid #e5e7eb;
   position: relative;
+  transition: 0.3s ease;
 }
 
 .progress {
-  position: absolute; left: 0; right: 0; top: 0; height: 6px;
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 6px;
   background: #e2e8f0;
   border-radius: var(--radius) var(--radius) 0 0;
   overflow: hidden;
 }
 .bar {
-  height: 100%; width: 0;
+  height: 100%;
+  width: 0;
   background: linear-gradient(90deg, var(--primary), var(--accent));
   transition: width 0.4s ease;
 }
@@ -57,6 +81,7 @@ header { text-align: center; margin-bottom: 28px; }
   align-items: center;
   gap: 8px;
   margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 .subject {
   color: var(--accent);
@@ -71,6 +96,7 @@ header { text-align: center; margin-bottom: 28px; }
   border-left: 5px solid var(--primary);
   margin-bottom: 16px;
   display: none;
+  font-size: 16px;
 }
 
 #question {
@@ -80,19 +106,32 @@ header { text-align: center; margin-bottom: 28px; }
   margin-bottom: 12px;
 }
 
-.bullets { list-style: none; padding: 0; }
+.bullets {
+  list-style: none;
+  padding: 0;
+}
 .bullets li {
   background: var(--bg1);
-  padding: 12px 16px;
+  padding: 14px 18px;
   border-radius: 12px;
-  margin: 8px 0;
+  margin: 10px 0;
   border-left: 6px solid var(--primary);
   cursor: pointer;
   transition: 0.25s ease;
+  font-size: 17px;
 }
-.bullets li:hover { background: #bae6fd; transform: translateX(4px); }
-.bullets li.correct { background: #dcfce7; border-left-color: var(--green); }
-.bullets li.wrong { background: #fee2e2; border-left-color: var(--red); }
+.bullets li:hover {
+  background: #bae6fd;
+  transform: translateX(4px);
+}
+.bullets li.correct {
+  background: #dcfce7;
+  border-left-color: var(--green);
+}
+.bullets li.wrong {
+  background: #fee2e2;
+  border-left-color: var(--red);
+}
 
 .btn {
   background: var(--primary);
@@ -107,14 +146,19 @@ header { text-align: center; margin-bottom: 28px; }
   cursor: pointer;
   transition: 0.25s;
 }
-.btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
+.btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
 
 .btn.secondary {
   background: #fff;
   border: 2px solid #cbd5e1;
   color: var(--text);
 }
-.btn.secondary:hover { background: #f8fafc; }
+.btn.secondary:hover {
+  background: #f8fafc;
+}
 
 footer {
   text-align: center;
@@ -123,11 +167,31 @@ footer {
   font-size: 14px;
 }
 
-.hidden { display: none; }
+.hidden {
+  display: none;
+}
 
-@media (max-width: 600px) {
-  .slide-card { padding: 28px; }
+
+/* ================= Responsividade ================= */
+@media (max-width:768px){
+  body { padding: 20px 12px; }
+  .slide-card { padding: 26px; }
+  #question { font-size: 20px; }
+  .bullets li { font-size: 16px; padding: 12px; }
+  .btn { font-size: 15px; padding: 12px 16px; }
+}
+
+@media (max-width:480px){
+  .title-wrap h1 { font-size: 22px; }
+  .title-wrap p { font-size: 13px; }
   #question { font-size: 18px; }
-  .bullets li { font-size: 15px; }
-  .btn { font-size: 15px; }
+  .bullets li { font-size: 15px; padding: 10px; }
+  .btn { font-size: 14px; padding: 10px; }
+  #text { font-size: 14px; padding: 12px; }
+}
+
+@media (max-width:380px){
+  .slide-card { padding: 18px; }
+  .btn { font-size: 13px; }
+  .title-wrap h1 { font-size: 20px; }
 }
